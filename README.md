@@ -1,5 +1,7 @@
 # A single NAND axiom for Boolean algebra
 
+[![Lean CI](https://github.com/olympichek/wolfram-axiom/actions/workflows/lean.yml/badge.svg)](https://github.com/olympichek/wolfram-axiom/actions/workflows/lean.yml)
+
 A Lean 4 formalization of the theorem that
 
 ```text
@@ -48,6 +50,8 @@ Nonemptiness is necessary: the equation holds vacuously on the empty type, which
 [Verification.lean](Verification.lean) prints the axiom dependencies of the main results, checks the two-element and one-element models, and demonstrates deriving commutativity through the completeness theorem.
 
 ## Build
+
+[GitHub Actions](.github/workflows/lean.yml) compiles all four Lean files, including the verification examples and axiom dependency output, on pushes and pull requests to `main`. The build treats warnings as errors.
 
 The project pins Lean and mathlib to **v4.29.1**, with exact dependency revisions recorded in [lake-manifest.json](lake-manifest.json).
 

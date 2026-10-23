@@ -1,0 +1,39 @@
+name: Lean CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Lean proofs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MATHLIB_NO_CACHE_ON_UPDATE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@24581d74d674803a25a81b10b059c5c0cdd344c6 # v1
+        with:
+          auto-config: "false"
+          use-github-cache: "false"
+          use-mathlib-cache: "false"
+
+      - name: Download mathlib build cache
+        run: lake exe cache get Mathlib/Order/BooleanAlgebra/Basic.lean
+
+      - name: Compile proofs and verification examples
+        run: lake build --wfail
