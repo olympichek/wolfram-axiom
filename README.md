@@ -2,30 +2,28 @@
 
 [![Lean CI](https://github.com/olympichek/wolfram-axiom/actions/workflows/lean.yml/badge.svg)](https://github.com/olympichek/wolfram-axiom/actions/workflows/lean.yml)
 
-A Lean 4 formalization of the theorem that
+This repository contains a proof, checked in Lean, that the single equation
 
 ```text
 ((a ⋆ b) ⋆ c) ⋆ (a ⋆ ((a ⋆ c) ⋆ a)) = c
 ```
 
-is a complete equational axiom system for Boolean algebra in the NAND language. The construction produces mathlib's standard [BooleanAlgebra](https://github.com/leanprover-community/mathlib4/blob/v4.29.1/Mathlib/Order/BooleanAlgebra/Defs.lean#L103), and the converse uses that same typeclass.
+suffices to recover Boolean algebra. We start with an arbitrary binary operation `⋆` and derive the Boolean laws from this equation alone.
 
-## Origin and exposition
+[**Read the exposition (PDF)**](proof/proof.pdf) for the mathematical argument.
 
-The proof presented here was found by **GPT-6 Astra Pro**. It was then formalized in Lean by **GPT-6 Astra / Codex**.
+## Origin
 
-The theorem already had a proof found using automated theorem proving software. Stephen Wolfram discusses that proof and the challenge of understanding it in [“Who Can Understand the Proof? A Window on Formalized Mathematics”](https://writings.stephenwolfram.com/2025/01/who-can-understand-the-proof-a-window-on-formalized-mathematics/). That proof derives the standard Sheffer axioms and already identifies commutativity as a pivotal intermediate result. The exposition here gives explicit substitutions for the algebraic lemmas and a self-contained order-theoretic construction of the Boolean lattice, and might be easier to follow.
+The proof presented here was found by **GPT-6 Astra Pro** and formalized in Lean by **GPT-6 Astra / Codex**.
 
-[**Read the exposition (PDF)**](proof/proof.pdf) for a human-readable presentation of the algebraic lemma, the Boolean algebra construction, and equational completeness.
+An earlier proof was found using automated theorem proving software. Stephen Wolfram discusses it and the challenge of understanding it in [“Who Can Understand the Proof? A Window on Formalized Mathematics”](https://writings.stephenwolfram.com/2025/01/who-can-understand-the-proof-a-window-on-formalized-mathematics/). The proof presented here might be easier to follow.
 
-## Main results
+## What is proved
 
-- [SingleNand.axiom_iff_booleanAlgebra](lean/BooleanAxiom.lean#L295): on any nonempty type, an operation satisfies the single axiom if and only if it is NAND for a mathlib Boolean algebra structure on that type.
-- [SingleNand.booleanAlgebra](lean/BooleanAxiom.lean#L246): constructs that structure from the axiom and a chosen element of the carrier.
-- [SingleNand.booleanAlgebra_nand](lean/BooleanAxiom.lean#L260): the constructed structure's NAND is the original operation.
-- [SingleNand.Term.derives_iff_valid](lean/Completeness.lean#L94): a NAND identity is derivable from the axiom if and only if it holds in every Boolean algebra.
+- [Boolean algebra characterization](lean/BooleanAxiom.lean#L295): a binary operation on a nonempty set satisfies the equation if and only if it is NAND—negated AND—for a Boolean algebra structure on that set.
+- [Completeness](lean/Completeness.lean#L94): an identity in the NAND language holds in every Boolean algebra if and only if it can be derived from the single equation by equational reasoning.
 
-The reconstructed operations are
+The familiar Boolean operations are recovered as follows:
 
 ```text
 ¬x    = x ⋆ x
@@ -35,25 +33,18 @@ x ∨ y = (x ⋆ x) ⋆ (y ⋆ y)
 ⊥     = ⊤ ⋆ ⊤
 ```
 
-[top_independent](lean/BooleanAxiom.lean#L48) proves that the expression for `⊤` is independent of `x`. The model characterization is universe-polymorphic. The equational-completeness statement uses terms with natural-number variables and quantifies over Boolean algebras in `Type`; the [soundness lemma](lean/Completeness.lean#L30) also applies in arbitrary universes.
+The expression defining `⊤` has the same value for every `x`. The theorem assumes a nonempty set and includes the one-element Boolean algebra.
 
-Nonemptiness is necessary: the equation holds vacuously on the empty type, which cannot have Boolean constants. The one-element Boolean algebra is included; no assumption that `⊥ ≠ ⊤` is made.
+## Proof files
 
-## Proof organization
-
-[NandEquations.lean](lean/NandEquations.lean) derives double negation, commutativity, and the three auxiliary identities from the single axiom by explicit equality rewrites. It imports only Lean.
-
-[BooleanAxiom.lean](lean/BooleanAxiom.lean) follows the order construction in the proof: define `x ≤ y` by `x ⋆ y = x ⋆ x`, prove the universal properties of meet and join, and derive distributivity from the splitting identity. The proof constructs mathlib's [Lattice](https://github.com/leanprover-community/mathlib4/blob/v4.29.1/Mathlib/Order/Lattice.lean#L342) directly, adds bounds, and proves the distributivity and complement laws to obtain [BooleanAlgebra](https://github.com/leanprover-community/mathlib4/blob/v4.29.1/Mathlib/Order/BooleanAlgebra/Defs.lean#L103). The file also proves the converse.
-
-[Completeness.lean](lean/Completeness.lean) defines NAND terms and an inductive relation of equational derivability. Its rules are reflexivity, symmetry, transitivity, congruence, and all substitution instances of the single axiom. General substitution is proved admissible. The quotient of terms by derivability satisfies the axiom, so the Boolean algebra construction applies to it. Evaluating an identity in this quotient proves the completeness direction. Thus equational completeness is itself formalized, rather than assumed as a metatheorem.
-
-[Verification.lean](lean/Verification.lean) prints the axiom dependencies of the main results, checks the two-element and one-element models, and demonstrates deriving commutativity through the completeness theorem.
+- [NandEquations.lean](lean/NandEquations.lean) derives double negation, commutativity, and the auxiliary identities by substitution and rewriting.
+- [BooleanAxiom.lean](lean/BooleanAxiom.lean) constructs the Boolean algebra using an order-theoretic argument and proves the converse.
+- [Completeness.lean](lean/Completeness.lean) proves equational completeness using the algebra of terms modulo derivability.
+- [Verification.lean](lean/Verification.lean) checks examples and reports which foundational axioms the proofs use.
 
 ## Build
 
-The project pins Lean and mathlib to **v4.29.1**, with exact dependency revisions recorded in [lake-manifest.json](lean/lake-manifest.json).
-
-From the repository root:
+The project uses Lean and mathlib **v4.29.1**. From the repository root:
 
 ```sh
 cd lean
@@ -61,16 +52,4 @@ lake exe cache get Mathlib.Order.BooleanAlgebra.Basic
 lake build
 ```
 
-The build includes all four Lean files and the dependency audit. There are no `sorry`, `admit`, or additional axiom declarations. Double negation and commutativity have no axiom dependencies. The final characterization and completeness theorems use only Lean's standard [propext](https://github.com/leanprover/lean4/blob/v4.29.1/src/Init/Core.lean#L1591), [Classical.choice](https://github.com/leanprover/lean4/blob/v4.29.1/src/Init/Prelude.lean#L795), and [Quot.sound](https://github.com/leanprover/lean4/blob/v4.29.1/src/Init/Core.lean#L1787).
-
-To use the construction in another file:
-
-```lean
-import Completeness
-
-example {α : Type} (op : α → α → α)
-    (h : SingleNand.Axiom op) (seed x y : α) :
-    letI := SingleNand.booleanAlgebra op h seed
-    (x ⊓ y)ᶜ = op x y :=
-  SingleNand.booleanAlgebra_nand op h seed x y
-```
+The proof is fully checked in Lean, with no unfinished proofs or axioms beyond Lean's standard foundations.
