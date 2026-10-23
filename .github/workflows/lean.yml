@@ -19,6 +19,9 @@ jobs:
     name: Build Lean proofs
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: lean
     env:
       MATHLIB_NO_CACHE_ON_UPDATE: "1"
     steps:
@@ -28,6 +31,7 @@ jobs:
       - name: Set up Lean
         uses: leanprover/lean-action@24581d74d674803a25a81b10b059c5c0cdd344c6 # v1
         with:
+          lake-package-directory: lean
           auto-config: "false"
           use-github-cache: "false"
           use-mathlib-cache: "false"
