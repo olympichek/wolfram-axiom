@@ -33,7 +33,7 @@ jobs:
           use-mathlib-cache: "false"
 
       - name: Download mathlib build cache
-        run: lake exe cache get Mathlib/Order/BooleanAlgebra/Basic.lean
+        run: lake exe cache get Mathlib.Order.BooleanAlgebra.Basic
 
       - name: Compile proofs and verification examples
         run: lake build --wfail

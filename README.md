@@ -58,7 +58,7 @@ The project pins Lean and mathlib to **v4.29.1**, with exact dependency revision
 From this directory:
 
 ```sh
-lake exe cache get Mathlib/Order/BooleanAlgebra/Basic.lean
+lake exe cache get Mathlib.Order.BooleanAlgebra.Basic
 lake build
 ```
 
