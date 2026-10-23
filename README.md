@@ -51,8 +51,6 @@ Nonemptiness is necessary: the equation holds vacuously on the empty type, which
 
 ## Build
 
-[GitHub Actions](.github/workflows/lean.yml) compiles all four Lean files, including the verification examples and axiom dependency output, on pushes and pull requests to `main`. The build treats warnings as errors.
-
 The project pins Lean and mathlib to **v4.29.1**, with exact dependency revisions recorded in [lake-manifest.json](lake-manifest.json).
 
 From this directory:
