@@ -1,0 +1,667 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hypertexnames=false]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+  pdftitle={A single NAND axiom for Boolean algebra},
+  pdfsubject={An explicit equational proof and reconstruction of the Boolean lattice}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\W}{\mathrm{W}}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{itemsep=2pt,topsep=5pt}
+\allowdisplaybreaks[1]
+\title{A single NAND axiom for Boolean algebra}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+We give an explicit proof that the equation
+\[
+ ((a*b)*c)*\bigl(a*((a*c)*a)\bigr)=c
+\]
+characterizes the NAND reducts of Boolean algebras on nonempty carriers.
+The proof has two parts: a sequence of substitutions establishes
+commutativity and double negation; an order-theoretic construction then
+recovers the Boolean lattice. We also explain why the equation is complete
+for identities in the NAND language.
+\end{abstract}
+
+\section{Statement and plan}
+Let $A$ be a nonempty set equipped with a binary operation $*$ satisfying
+\begin{equation}
+ \boxed{((x*y)*z)*\bigl(x*((x*z)*x)\bigr)=z}
+ \tag{W}\label{eq:W}
+\end{equation}
+for all $x,y,z\in A$. No other property of $*$ is assumed. In particular,
+parentheses must be retained: even in a Boolean algebra, NAND is not
+associative.
+
+\begin{theorem}\label{thm:main}
+There is a Boolean algebra structure on $A$ whose NAND operation is $*$.
+Writing $n(x)=x*x$, its operations are
+\[
+ \neg x=n(x),\qquad
+ x\wedge y=n(x*y),\qquad
+ x\vee y=n(x)*n(y),
+\]
+and its constants are
+\[
+ \one=x*n(x),\qquad \zero=n(\one).
+\]
+The expression defining $\one$ is independent of $x$. Conversely, NAND
+in any Boolean algebra satisfies \eqref{eq:W}.
+\end{theorem}
+
+We include the one-element Boolean algebra. Nonemptiness is needed to
+obtain the constants: an empty algebra satisfies \eqref{eq:W} vacuously.
+
+The difficult part is the following purely equational lemma. Its proof
+occupies Section~\ref{sec:equations}. Section~\ref{sec:lattice} explains
+how its identities determine a bounded distributive lattice with
+complement, and Section~\ref{sec:complete} proves the converse and
+completeness.
+
+\begin{lemma}[The algebraic lemma]\label{lem:core}
+Put $n(x)=x*x$. The single identity \eqref{eq:W} implies
+\begin{align}
+ x*y&=y*x,\tag{C}\label{eq:comm}\\
+ n(n(x))&=x,\tag{DN}\label{eq:DN}\\
+ n(x)*(x*y)&=x,\tag{I}\label{eq:I}\\
+ (x*y)*(y*(x*z))&=y,\tag{S}\label{eq:S}\\
+ x*(y*(x*(y*z)))&=x*(y*z).\tag{J}\label{eq:J}
+\end{align}
+\end{lemma}
+
+\section{From the single axiom to the algebraic lemma}\label{sec:equations}
+The repeated right-hand factor in \eqref{eq:W} suggests introducing
+\[
+ q(x,y)=x*((x*y)*x),\qquad m(x)=q(x,x).
+\]
+Then the axiom reads
+\[
+ ((x*y)*z)*q(x,z)=z.
+\]
+We write $\W(x,y,z)$ for this instance of the axiom. Our intermediate
+goals are $m(x)=x*x$ and $q(x,y)=y*x$. These simplify the repeated
+expressions enough to reveal double negation and commutativity.
+Until commutativity has been proved, the order of every pair of factors
+is significant.
+
+\subsection{Four substitution identities}
+The instance $\W(x,(x*y)*x,y)$ gives
+\begin{equation}
+ (q(x,y)*y)*q(x,y)=y.\tag{R}\label{eq:R}
+\end{equation}
+Expanding the outer $q$ and applying \eqref{eq:R}, we obtain
+\begin{equation}
+ q(q(x,y),y)=q(x,y)*y.\tag{R'}\label{eq:Rprime}
+\end{equation}
+
+For the next identity, use
+$\W((v*w)*x,q(v,x),y)$. Its left-hand side is
+\[
+ \Bigl(\bigl(((v*w)*x)*q(v,x)\bigr)*y\Bigr)*q((v*w)*x,y).
+\]
+The parenthesized factor equals $x$ by $\W(v,w,x)$, so
+\[
+ (x*y)*q((v*w)*x,y)=y.
+\]
+Every element $z$ can be written as a product, since $\W(z,z,z)$ gives
+$z=((z*z)*z)*m(z)$. Thus $v*w$ in the preceding identity can be any
+$z\in A$, and
+\begin{equation}
+ (x*y)*q(z*x,y)=y.\tag{$C_0$}\label{eq:C0}
+\end{equation}
+
+In \eqref{eq:C0}, substitute $x=q(a,b)$, $y=c$, and $z=(a*a)*b$.
+The instance $\W(a,a,b)$ simplifies $z*x$ to $b$. Hence
+\begin{equation}
+ (q(a,b)*c)*q(b,c)=c.\tag{$D_0$}\label{eq:D0}
+\end{equation}
+Finally, substitute $(a,b,c)=(x,q(y,z),z)$ into \eqref{eq:D0} and
+use \eqref{eq:Rprime}:
+\begin{equation}
+ (q(x,q(y,z))*z)*(q(y,z)*z)=z.\tag{$J_0$}\label{eq:J0}
+\end{equation}
+
+\subsection{Identifying the square and proving double negation}
+Fix $a\in A$ and abbreviate
+\[
+ u=m(a),\qquad t=(a*a)*a.
+\]
+The definition of $m$ and $\W(a,a,a)$ give
+\begin{equation}
+ a*t=u,\qquad t*u=a.\label{eq:atu}
+\end{equation}
+We first derive four relations involving $a$ and $u$:
+\begin{align}
+ (a*u)*a&=u,\tag{$U_1$}\label{eq:U1}\\
+ u*u&=a,\tag{$U_2$}\label{eq:U2}\\
+ u*(u*a)&=a,\tag{$U_3$}\label{eq:U3}\\
+ a*(u*(a*u))&=u.\tag{$U_4$}\label{eq:U4}
+\end{align}
+To prove \eqref{eq:U1}, apply \eqref{eq:C0} with $(x,y,z)=(a,u,a*a)$.
+This gives $(a*u)*q(t,u)=u$, while
+\[
+ q(t,u)=t*((t*u)*t)=t*(a*t)=t*u=a.
+\]
+Now $\W(a,u,a)$ becomes $((a*u)*a)*u=a$; applying
+\eqref{eq:U1} proves \eqref{eq:U2}.
+
+For \eqref{eq:U3}, note that
+$q(a,u)=a*((a*u)*a)=a*u$. In \eqref{eq:J0}, set $x=y=z=a$.
+Since $q(a,a)=u$, the result is
+\[
+ ((a*u)*a)*(u*a)=a,
+\]
+which reduces to \eqref{eq:U3}. Finally, \eqref{eq:C0} with
+$(x,y,z)=(t,u,a)$ gives $a*q(u,u)=u$. Expanding $q(u,u)$ and using
+$u*u=a$ proves \eqref{eq:U4}.
+
+We need one identity that applies these relations at a different element.
+For arbitrary $d,b$, set
+\[
+ v=(d*d)*d,\qquad r=q(b*(d*d),d).
+\]
+By \eqref{eq:C0}, $v*r=d$. Therefore
+\[
+ q(v,r)=v*((v*r)*v)=v*(d*v)=v*m(d)=d,
+\]
+where the last equality is $\W(d,d,d)$. Now \eqref{eq:J0} at
+$(x,y,z)=(v,b*(d*d),d)$ yields
+\[
+ (d*d)*(q(b*(d*d),d)*d)=d.
+\]
+Replace $d$ by $m(a)$ and use \eqref{eq:U2}, which holds for every $a$:
+\begin{equation}
+ a*(q(b*a,m(a))*m(a))=m(a).\tag{V}\label{eq:V}
+\end{equation}
+
+Return to our fixed $a$ and put $w=u*(a*u)$. By \eqref{eq:U4}
+and \eqref{eq:U2}, respectively,
+\begin{equation}
+ a*w=u,\qquad m(u)=u*((u*u)*u)=w.\label{eq:w}
+\end{equation}
+The instance $\W(u,u,u*a)$ reduces, using \eqref{eq:U2} and
+\eqref{eq:U3}, to
+\begin{equation}
+ (a*(u*a))*w=u*a.\label{eq:waux}
+\end{equation}
+Apply \eqref{eq:V} with $(a,b)$ replaced by $(u,t)$. Since $t*u=a$
+and $m(u)=w$, this gives
+\[
+ u*(q(a,w)*w)=w.
+\]
+But $q(a,w)=a*((a*w)*a)=a*(u*a)$. By \eqref{eq:waux}, the last
+displayed left-hand side is $u*(u*a)=a$. Thus $w=a$, and $a*w=u$
+now gives
+\begin{equation}
+ \boxed{m(a)=a*a.}\label{eq:m}
+\end{equation}
+Substituting this into $u*u=a$ proves double negation \eqref{eq:DN}.
+We also record two consequences needed below:
+\begin{align}
+ (a*a)*(a*(a*a))&=a,\tag{H}\label{eq:H}\\
+ ((a*b)*a)*(a*a)&=a.\tag{L}\label{eq:L}
+\end{align}
+The first is $w=a$ after substituting $u=a*a$; the second is
+$\W(a,b,a)$ after substituting $m(a)=a*a$.
+
+\subsection{Identifying the reversed product}
+We next prepare identities that let us compare $q(a,b)$ with $b*a$.
+First, $\W(q(a,b),c,b)$ and \eqref{eq:Rprime} give
+\begin{equation}
+ ((q(a,b)*c)*b)*(q(a,b)*b)=b.\tag{$P_0$}\label{eq:P0}
+\end{equation}
+Apply \eqref{eq:C0} with
+\[
+ x=q(a,b)*b,\qquad y=c,\qquad z=(q(a,b)*b)*b.
+\]
+By \eqref{eq:P0} at $c=b$, the product $z*x$ is $b$, so
+\begin{equation}
+ ((q(a,b)*b)*c)*q(b,c)=c.\tag{$E_0$}\label{eq:E0}
+\end{equation}
+In this identity replace $(a,b,c)$ by $(b,a,q(b,a))$.
+Its first factor is $a$ by \eqref{eq:R}, giving
+\begin{equation}
+ a*q(a,q(b,a))=q(b,a).\tag{$K_0$}\label{eq:K0}
+\end{equation}
+Two more substitutions into the original axiom yield
+\begin{align}
+ a*q(b*c,q(b,a))&=q(b,a),\tag{$B_0$}\label{eq:B0}\\
+ a*q(b,q(c*b,a))&=q(c*b,a).\tag{$I_0$}\label{eq:I0}
+\end{align}
+For \eqref{eq:B0}, use $\W(b*c,a,q(b,a))$ and simplify the first
+factor by $\W(b,c,a)$. For \eqref{eq:I0}, use
+$\W(b,a,q(c*b,a))$ and simplify the first factor by \eqref{eq:C0}.
+
+We first identify $q$ on pairs whose second entry is a square:
+\begin{equation}
+ \boxed{q(b*a,a*a)=a.}\tag{$T_0$}\label{eq:T0}
+\end{equation}
+Here are the intermediate steps. Let $r=q(x*y,y)$. Equation \eqref{eq:C0}
+gives $(y*y)*r=y$, and hence
+\[
+ q(y*y,r)=(y*y)*(y*(y*y))=y
+\]
+by \eqref{eq:H}. In \eqref{eq:I0}, take $(a,b,c)=(r,y,y)$ to get
+\[
+ r*q(y,q(y*y,r))=q(y*y,r).
+\]
+This reduces to $r*q(y,y)=y$. Since $q(y,y)=m(y)=y*y$,
+\begin{equation}
+ q(x*y,y)*(y*y)=y.\tag{$N_0$}\label{eq:N0}
+\end{equation}
+Now apply the original axiom at
+\[
+ \W\bigl(b*a,\,((b*a)*a)*(b*a),\,a*a\bigr).
+\]
+The first factor is $q(b*a,a)*(a*a)=a$ by \eqref{eq:N0}, leaving
+\begin{equation}
+ a*q(b*a,a*a)=a*a.\tag{$O_0$}\label{eq:O0}
+\end{equation}
+Put $s=q(b*a,a*a)$. Equation \eqref{eq:I0} at $(a*a,a,b)$ says
+$(a*a)*q(a,s)=s$. By \eqref{eq:O0}, $a*s=a*a$, so
+\[
+ q(a,s)=a*((a*s)*a)=a*((a*a)*a)=m(a)=a*a.
+\]
+Thus $s=(a*a)*(a*a)=a$, proving \eqref{eq:T0}.
+
+\subsection{Commutativity}
+Fix $a,b$ and write
+\[
+ t=(a*b)*a,\qquad r=q(a,b)=a*t.
+\]
+The next three equalities relate $a,t,r$:
+\begin{equation}
+ t*r=a,\qquad r*a=t,\qquad t*a=r.\label{eq:balance}
+\end{equation}
+Indeed, \eqref{eq:T0} and \eqref{eq:L} give
+$q(t,a*a)=a$ and $t*(a*a)=a$. Expanding the former,
+\[
+ a=q(t,a*a)=t*((t*(a*a))*t)=t*(a*t)=t*r.
+\]
+This proves the universal identity
+\[
+ ((x*y)*x)*q(x,y)=x.
+\]
+Apply it with $(x,y)=(t,a*a)$. The two known simplifications give
+$(a*t)*a=t$, or $r*a=t$.
+Finally,
+\[
+ q(a,t)=a*((a*t)*a)=a*(r*a)=a*t=r,
+\]
+and
+\[
+ q(t,r)=t*((t*r)*t)=t*(a*t)=t*r=a.
+\]
+Equation \eqref{eq:K0} with $(a,b)=(t,a)$ is therefore $t*a=r$.
+This proves all of \eqref{eq:balance}.
+
+We now establish
+\begin{equation}
+ (a*a)*q(a,b)=a.\tag{$W_1$}\label{eq:W1}
+\end{equation}
+For an arbitrary $c$, \eqref{eq:C0} gives $(a*a)*q(c*a,a)=a$.
+Consequently,
+\[
+ q(a*a,q(c*a,a))=(a*a)*(a*(a*a))=a
+\]
+by \eqref{eq:H}. Thus \eqref{eq:J0} at $(x,y,z)=(a*a,c*a,a)$ becomes
+\begin{equation}
+ (a*a)*(q(c*a,a)*a)=a.\label{eq:W1aux}
+\end{equation}
+Take $c=t$. Using \eqref{eq:balance},
+\[
+ q(t*a,a)=q(r,a)=r*((r*a)*r)=r*(t*r)=r*a=t.
+\]
+Equation \eqref{eq:W1aux} becomes $(a*a)*(t*a)=a$; since $t*a=r$,
+this is \eqref{eq:W1}.
+
+We can now identify $q$ everywhere. Equation \eqref{eq:B0} at $c=b$ says
+\[
+ a*q(b*b,q(b,a))=q(b,a).
+\]
+Its inner expression simplifies by \eqref{eq:W1} and \eqref{eq:H}:
+\[
+ \begin{aligned}
+ q(b*b,q(b,a))
+   &=(b*b)*(((b*b)*q(b,a))*(b*b))\\
+   &=(b*b)*(b*(b*b))=b.
+ \end{aligned}
+\]
+We have proved
+\begin{equation}
+ \boxed{q(b,a)=a*b.}\tag{$Q_1$}\label{eq:Q1}
+\end{equation}
+Finally, rewrite \eqref{eq:K0} using \eqref{eq:Q1}:
+\[
+ \begin{aligned}
+ q(b,a)&=a*q(a,q(b,a))\\
+       &=a*(q(b,a)*a)\\
+       &=a*((a*b)*a)\\
+       &=q(a,b).
+ \end{aligned}
+\]
+The first and last expressions are $a*b$ and $b*a$, respectively.
+This proves commutativity \eqref{eq:comm}.
+
+\subsection{The remaining three identities}
+We may now use commutativity freely. Equation \eqref{eq:W1}, together
+with \eqref{eq:Q1}, gives $n(x)*(x*y)=x$, proving \eqref{eq:I}.
+The original axiom and \eqref{eq:Q1} give
+\[
+ ((x*y)*z)*(x*z)=z.
+\]
+Replacing $(y,z)$ by $(z,y)$ and commuting the indicated factors yields
+$(x*y)*(y*(x*z))=y$, which is \eqref{eq:S}.
+Finally, \eqref{eq:I0} and \eqref{eq:Q1} give
+\[
+ a*((a*(c*b))*b)=a*(c*b).
+\]
+Commutativity turns this into \eqref{eq:J}.
+Together with double negation, this finishes the proof of
+Lemma~\ref{lem:core}.\hfill$\square$
+
+\section{Recovering the Boolean lattice}\label{sec:lattice}
+From this point onward we use only the five identities in
+Lemma~\ref{lem:core}. In particular, $*$ is commutative and $n$ is an
+involution, so $n$ is both injective and surjective.
+
+\subsection{Absorption identities and constants}
+We begin with three useful consequences:
+\begin{align}
+ x*(x*y)&=x*n(y),\tag{B}\label{eq:B}\\
+ x*(n(x)*y)&=n(x),\tag{I'}\label{eq:Iprime}\\
+ x*n(x*y)&=x*y.\tag{A}\label{eq:A}
+\end{align}
+For \eqref{eq:B}, put $p=x*y$. Identity \eqref{eq:J} at $(x,p,y)$ is
+\[
+ x*(p*(x*(p*y)))=x*(p*y).
+\]
+Identity \eqref{eq:S} at $(y,x,p)$ gives $p*(x*(p*y))=x$.
+Consequently $x*(y*(x*y))=n(x)$. Use this last equality with $x,y$
+interchanged to simplify \eqref{eq:J} at $(x,y,x)$:
+\[
+ x*n(y)=x*(x*y).
+\]
+This is \eqref{eq:B}.
+
+Replacing $x$ by $n(x)$ in \eqref{eq:I} proves \eqref{eq:Iprime}.
+For \eqref{eq:A}, apply \eqref{eq:I} at $(x*y,n(x))$. Its inner
+product is $(x*y)*n(x)=x$ by \eqref{eq:I} and commutativity, so
+$n(x*y)*x=x*y$, as required.
+
+Let $e(x)=x*n(x)$. For $d=x*y$, the preceding identities give
+\[
+ \begin{aligned}
+ e(x)&=n(x)*x\\
+     &=n(x)*(n(x)*d) &&\text{by \eqref{eq:I}}\\
+     &=n(x)*n(d) &&\text{by \eqref{eq:B}}\\
+     &=n(d)*(n(d)*x) &&\text{by \eqref{eq:B} and commutativity}\\
+     &=n(d)*d &&\text{by \eqref{eq:A} and commutativity}\\
+     &=e(d).
+ \end{aligned}
+\]
+Interchanging $x,y$ gives $e(y)=e(d)$ as well. Thus $e(x)$ is constant,
+and nonemptiness allows us to define
+\[
+ \one=e(x),\qquad \zero=n(\one).
+\]
+Equation \eqref{eq:B} and double negation show that
+\begin{equation}
+ x*\one=x*(x*n(x))=x*n(n(x))=n(x).\label{eq:one}
+\end{equation}
+Applying \eqref{eq:I} at $(\one,x)$ gives
+$\zero*(\one*x)=\one$, hence $\zero*n(x)=\one$.
+Since $n$ is surjective,
+\begin{equation}
+ \zero*x=\one\qquad\text{for all }x.\label{eq:zero}
+\end{equation}
+
+\subsection{The order and its reversal by negation}
+Define a relation on $A$ by
+\begin{equation}
+ x\leq y\quad\Longleftrightarrow\quad x*y=n(x).\label{eq:order}
+\end{equation}
+It is reflexive by the definition of $n$. To see antisymmetry, suppose
+$x\leq y$ and $y\leq x$. Commutativity gives $n(x)=x*y=y*x=n(y)$,
+and injectivity of $n$ gives $x=y$.
+
+A second description of the relation will be useful:
+\begin{equation}
+ x\leq y\quad\Longleftrightarrow\quad x*n(y)=\one.\label{eq:orderone}
+\end{equation}
+If $x*y=n(x)$, then \eqref{eq:B} gives
+$x*n(y)=x*(x*y)=x*n(x)=\one$.
+Conversely, if $x*n(y)=\one$, apply \eqref{eq:B} at $(x,n(y))$:
+\[
+ x*y=x*(x*n(y))=x*\one=n(x).
+\]
+
+For transitivity, suppose $x\leq y$ and $y\leq z$. Then
+$y*x=n(x)$ and $y*n(z)=\one$. Identity \eqref{eq:S} at $(y,n(z),x)$,
+\[
+ (y*n(z))*(n(z)*(y*x))=n(z),
+\]
+therefore becomes
+$\one*(n(z)*n(x))=n(z)$.
+By \eqref{eq:one} this says $n(n(z)*n(x))=n(z)$.
+Apply $n$ to both sides to obtain $n(x)*n(z)=z$.
+Now \eqref{eq:Iprime} at $(x,n(z))$ gives
+\[
+ x*z=x*(n(x)*n(z))=n(x),
+\]
+so $x\leq z$. This proves that \eqref{eq:order} is a partial order.
+
+Negation reverses it. Indeed, if $x\leq y$, then
+\[
+ n(y)*n(x)=n(y)*(y*x)=y=n(n(y))
+\]
+by \eqref{eq:I}, so
+\begin{equation}
+ x\leq y\quad\Longrightarrow\quad n(y)\leq n(x).\label{eq:anti}
+\end{equation}
+Since $n$ is involutive, this implication is an equivalence.
+
+\subsection{Meet and join}
+Define $x\wedge y=n(x*y)$. By \eqref{eq:A},
+\[
+ n(x*y)*x=x*y=n(n(x*y)).
+\]
+Thus $x\wedge y\leq x$, and commutativity also gives
+$x\wedge y\leq y$.
+
+We must prove that this lower bound is the greatest one. Suppose
+$z\leq a$ and $z\leq b$, and put
+\[
+ k=n(z),\qquad p=a*b,\qquad h=k*p.
+\]
+The hypotheses say $a*z=b*z=k$. Applying \eqref{eq:S} at
+$(a,t,z)$ and $(b,t,z)$ gives, for every $t$,
+\begin{equation}
+ (t*a)*(t*k)=t,\qquad (t*b)*(t*k)=t.\label{eq:loweraux}
+\end{equation}
+The second equality at $t=a$ is $p*(a*k)=a$.
+Identity \eqref{eq:S} at $(k,p,a)$ now gives
+\[
+ h*a=(k*p)*(p*(k*a))=p.
+\]
+Use the first equality of \eqref{eq:loweraux} at $t=h$ to calculate
+\[
+ \begin{aligned}
+ h&=(h*a)*(h*k)\\
+  &=p*(k*(k*p))\\
+  &=p*(k*n(p)) &&\text{by \eqref{eq:B}}\\
+  &=n(p) &&\text{by \eqref{eq:Iprime} and commutativity}.
+ \end{aligned}
+\]
+Finally, \eqref{eq:I} at $(k,p)$ is $n(k)*(k*p)=k$. Since
+$n(k)=z$ and $k*p=h=n(p)$, it says
+\[
+ z*n(p)=n(z).
+\]
+This is exactly $z\leq n(p)=a\wedge b$. Hence $\wedge$ is the
+greatest-lower-bound operation. Its commutativity, associativity,
+idempotence, and monotonicity follow from this universal property.
+
+An order-reversing involution turns greatest lower bounds into least
+upper bounds. Explicitly, define
+\[
+ x\vee y=n\bigl(n(x)\wedge n(y)\bigr)=n(x)*n(y).
+\]
+Since $n(x)\wedge n(y)\leq n(x),n(y)$, applying $n$ shows
+$x,y\leq x\vee y$. If $x,y\leq z$, then
+$n(z)\leq n(x),n(y)$, so $n(z)\leq n(x)\wedge n(y)$;
+applying $n$ gives $x\vee y\leq z$.
+Thus $\vee$ is the least-upper-bound operation, and we have a lattice.
+The same construction gives the De Morgan laws
+\begin{equation}
+ n(x\wedge y)=n(x)\vee n(y),\qquad
+ n(x\vee y)=n(x)\wedge n(y).\label{eq:demorgan}
+\end{equation}
+
+By \eqref{eq:one}, $x\leq\one$. By \eqref{eq:zero} and double negation,
+$\zero*x=\one=n(\zero)$, so $\zero\leq x$.
+Finally,
+\begin{equation}
+ x\wedge n(x)=n(x*n(x))=\zero,\qquad
+ x\vee n(x)=n(x)*x=\one.\label{eq:complement}
+\end{equation}
+We have obtained a bounded lattice in which $n(x)$ is a complement of $x$.
+
+\subsection{Distributivity from splitting}
+A complemented lattice need not be distributive. The additional information
+we need comes from \eqref{eq:S} at $(x,y,z)=(a,c,a)$:
+\[
+ (a*c)*(c*n(a))=c.
+\]
+In our lattice notation this is the splitting identity
+\begin{equation}
+ \boxed{c=(c\wedge a)\vee(c\wedge n(a)).}\label{eq:split}
+\end{equation}
+Indeed, expanding the right-hand side as NAND terms and applying double
+negation gives $(c*a)*(c*n(a))$.
+
+Splitting first yields the useful criterion
+\begin{equation}
+ u\leq v\quad\Longleftrightarrow\quad u\wedge n(v)=\zero.
+ \label{eq:orthogonal}
+\end{equation}
+For the forward direction, monotonicity of meet gives
+$u\wedge n(v)\leq v\wedge n(v)=\zero$.
+For the reverse direction, \eqref{eq:split} gives
+\[
+ u=(u\wedge v)\vee(u\wedge n(v))=u\wedge v\leq v.
+\]
+
+Now set
+\[
+ t=x\wedge(y\vee z),\qquad
+ d=(x\wedge y)\vee(x\wedge z).
+\]
+Both $x\wedge y$ and $x\wedge z$ lie below $t$, so $d\leq t$.
+To prove the other inequality, consider $r=t\wedge n(d)$.
+We will show $r=\zero$, which implies $t\leq d$ by
+\eqref{eq:orthogonal}.
+
+We have $r\leq x$ and $r\leq n(d)$. Since $x\wedge y\leq d$,
+order reversal gives $r\leq n(x\wedge y)$. Consequently,
+\[
+ r\wedge y\leq x\wedge y,
+ \qquad
+ r\wedge y\leq r\leq n(x\wedge y).
+\]
+Thus $r\wedge y$ is below the meet of an element and its complement,
+so $r\wedge y=\zero$. By \eqref{eq:orthogonal} and double negation,
+$r\leq n(y)$. The same argument with $z$ gives $r\leq n(z)$.
+Using \eqref{eq:demorgan},
+\[
+ r\leq n(y)\wedge n(z)=n(y\vee z).
+\]
+But also $r\leq t\leq y\vee z$. Therefore $r$ lies below an element
+and its complement, so $r=\zero$, as desired.
+We have proved
+\begin{equation}
+ x\wedge(y\vee z)=(x\wedge y)\vee(x\wedge z).\label{eq:distrib}
+\end{equation}
+Applying $n$ to \eqref{eq:distrib} with $x,y,z$ replaced by
+$n(x),n(y),n(z)$, and using De Morgan's laws, gives the dual
+distributive law.
+
+It follows that $(A,\wedge,\vee,n,\zero,\one)$ is a Boolean algebra.
+Moreover,
+\[
+ n(x\wedge y)=n(n(x*y))=x*y,
+\]
+so its NAND operation is exactly the operation with which we started.
+
+\section{Converse and equational completeness}\label{sec:complete}
+\subsection{Checking the axiom in a Boolean algebra}
+In any Boolean algebra, let $a*b=\neg(a\wedge b)$.
+The ordinary Boolean laws give
+\[
+ (a*b)*c=(a\wedge b)\vee\neg c,
+ \qquad
+ a*((a*c)*a)=\neg a\vee\neg c.
+\]
+For the second equality, one can first calculate
+$(a*c)*a=(a\wedge c)\vee\neg a$, and then take NAND with $a$.
+It follows that
+\[
+ \begin{aligned}
+ &((a*b)*c)*(a*((a*c)*a))\\
+ &\qquad=\neg\bigl(((a\wedge b)\vee\neg c)
+                    \wedge(\neg a\vee\neg c)\bigr)\\
+ &\qquad=\neg\bigl(\neg c\vee(a\wedge b\wedge\neg a)\bigr)\\
+ &\qquad=c.
+ \end{aligned}
+\]
+Thus \eqref{eq:W} holds, completing the proof of
+Theorem~\ref{thm:main}.\hfill$\square$
+
+\subsection{Why every Boolean NAND identity follows}
+The model characterization also gives the claimed completeness. We spell
+out the short quotient argument so that this last step does not rely on
+an unstated completeness theorem.
+
+Let $T$ be the set of terms formed from variables $x_0,x_1,\ldots$ and a
+single binary operation symbol $*$. Write $s\equiv t$ if the equation
+$s=t$ can be derived using substitution instances of \eqref{eq:W},
+reflexivity, symmetry, transitivity, and replacement of equal subterms.
+This is an equivalence relation and a congruence:
+\[
+ s\equiv s',\quad t\equiv t'
+ \quad\Longrightarrow\quad
+ s*t\equiv s'*t'.
+\]
+Thus the quotient $F=T/{\equiv}$ has a well-defined operation
+$[s]*[t]=[s*t]$. It is nonempty, since it contains $[x_0]$.
+All substitution instances of \eqref{eq:W} are among the generating
+relations, so $F$ satisfies \eqref{eq:W}. By
+Theorem~\ref{thm:main}, $F$ is the NAND reduct of a Boolean algebra.
+
+Suppose now that $s=t$ is valid under every interpretation in every
+Boolean algebra. Interpret each variable $x_i$ as $[x_i]\in F$.
+Induction on terms shows that a term $r$ then evaluates to $[r]$.
+Validity therefore gives $[s]=[t]$, which, by definition of the quotient,
+means $s\equiv t$. The identity is derivable from \eqref{eq:W}.
+Conversely, every derivable identity is valid in every Boolean algebra,
+because the axiom and all equality rules are valid there. We conclude:
+\begin{theorem}[Equational completeness]
+An identity in the NAND language holds in every Boolean algebra if and
+only if it is derivable from \eqref{eq:W} by equational reasoning.
+\end{theorem}
+
+\end{document}

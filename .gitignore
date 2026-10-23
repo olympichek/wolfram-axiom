@@ -1,0 +1,10 @@
+.lake/
+.audit/
+exposition/
+*.log
+*.zip
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
